@@ -5,7 +5,7 @@ import collections
 import ast
 
 
-__all__ = 'SerialView'
+__all__ = ['SerialView']
 
 
 def _is_reprable(key):
@@ -27,7 +27,7 @@ class SerialView(collections.MutableMapping):
     Values are limited to pickleable types, and mutations to stored objects
     are not reflected in the underlying object.
 
-    Keys may consist of strings, unicode, ints, and tuples (of these typed).
+    Keys may consist of strings, unicode, ints, and tuples (of these types).
     We are using repr to serialize the key and we are assuming that it is
     deterministic.
 
@@ -53,8 +53,8 @@ class SerialView(collections.MutableMapping):
             raise ValueError('cannot deterministically serialize key %r' % key)
         return repr(key)
     _load_key = staticmethod(lambda x: ast.literal_eval(x))
-    _dump_value = staticmethod(lambda x: buffer(pickle.dumps(x, protocol=-1)))
-    _load_value = staticmethod(lambda x: pickle.loads(str(x)))
+    _dump_value = staticmethod(lambda x: pickle.dumps(x, protocol=-1))
+    _load_value = staticmethod(lambda x: pickle.loads(x))
     
     def __setitem__(self, key, value):
         self._mapping[self._dump_key(key)] = self._dump_value(value)
