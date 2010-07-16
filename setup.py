@@ -2,13 +2,13 @@
 from distutils.core import setup
 
 setup(
-    name='LiteMap',
-    version='0.2.1a',
-    description='Mapping class which stores in SQLite database.',
-    url='http://github.com/mikeboers/LiteMap',
-    py_modules=['litemap'],
+    name='SerialView',
+    version='0.1a',
+    description='Mapping wrapper to serialize keys/values for storage.',
+    url='http://github.com/mikeboers/SerialView',
+    py_modules=['serialview'],
     
     author='Mike Boers',
-    author_email='litemap@mikeboers.com',
+    author_email='serialview@mikeboers.com',
     license='New BSD License',
 )
