@@ -2,7 +2,6 @@
 
 import cPickle as pickle
 import collections
-import threading
 import ast
 
 
@@ -26,7 +25,7 @@ class SerialView(collections.MutableMapping):
     """Serializing wrapper around a mapping.
 
     Values are limited to pickleable types, and mutations to stored objects
-    are not reflected in the database.
+    are not reflected in the underlying object.
 
     Keys may consist of strings, unicode, ints, and tuples (of these typed).
     We are using repr to serialize the key and we are assuming that it is
@@ -79,62 +78,3 @@ class SerialView(collections.MutableMapping):
     def __len__(self):
         return len(self._mapping)
 
-
-
-
-def test_thread_safe():
-    
-    import os
-    from threading import Thread
-    import random
-    import time
-    
-    path = ':memory:'
-    store = RawLiteMap(path)
-    
-    def target():
-        for i in xrange(100):
-            items = [(os.urandom(5), os.urandom(10)) for j in xrange(5)]
-            for k, v in items:
-                store[k] = v
-            for k, v in items:
-                assert store[k] == v
-    
-    threads = [Thread(target=target) for i in xrange(5)]
-    for x in threads:
-        x.start()
-    for x in threads:
-        x.join()
-
-    
-    
-if __name__ == '__main__':
-    
-    from time import clock as time
-    # import bsddb
-    import os
-    
-    store = LiteMap(':memory:')
-    store.clear()
-    
-    start_time = time()
-    
-    store['key'] = 'whatever'
-    assert store['key'] == 'whatever'
-    assert 'key' in store
-    assert 'not' not in store
-    store[('tuple', 1)] = 'tuple_1'
-    assert store[('tuple', 1)] == 'tuple_1'
-    for i in range(100):
-        key = os.urandom(5)
-        value = os.urandom(10)
-        store[key] = value
-        assert store[key] == value, '%r != %r' % (repr(store[key]), value)
-    
-    store['a'] = 1
-    assert store.setdefault('a', 2) == 1
-    assert store['a'] == 1
-    assert store.setdefault('b', 1) == 1
-    assert store['b'] == 1
-    
-    print 'test duration:', time() - start_time
