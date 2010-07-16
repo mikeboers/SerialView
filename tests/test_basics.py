@@ -49,24 +49,6 @@ class TestMappingInterface(TestCase):
         self.view['key'] = 'value'
         del self.view['KEY']
         self.assert_('key' not in self.view)
-    
-    def test_update(self):
-        self.view.update(dict(
-            a='one',
-            B='TWO',
-        ))
-        self.assertEqual(self.view['a'], 'ONE')
-        self.assertEqual(self.view['b'], 'TWO')
-    
-    def test_items(self):
-        self.view.update(dict(
-            a='one',
-            B='TWO',
-        ))
-        self.assertEqual(sorted(self.view.items()), [('a', 'ONE'), ('b', 'TWO')])
-        self.assertEqual(sorted(self.view.keys()), ['a', 'b'])
-        self.assertEqual(sorted(self.view.values()), ['ONE', 'TWO'])
-        
         
 
 
