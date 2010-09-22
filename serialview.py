@@ -61,9 +61,11 @@ class SerialView(collections.MutableMapping):
 
     def __getitem__(self, key):
         try:
-            return self._load_value(self._mapping[self._dump_key(key)])
+            encoded = self._mapping[self._dump_key(key)]
         except KeyError:
             raise KeyError(key)
+        if encoded is not None:
+            return self._load_value(encoded)
     
     def __delitem__(self, key):
         try:
