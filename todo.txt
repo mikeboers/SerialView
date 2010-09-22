@@ -9,3 +9,7 @@
     
     bsddb uses put
     redis uses set
+
+
+- Should wrap around getlist and other multimap methods if
+  they exist.
